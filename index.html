@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUNA BAR</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --deep-space: #0A0E17;
+            --midnight-blue: #131B2E;
+            --cosmic-purple: #2A1B3D;
+            --starlight: #FFE066;
+            --starlight-glow: #FFE877;
+            --moonlight: #E6E6FA;
+            --nebula: #8A2BE2;
+            --celestial: #00BFFF;
+            --text-light: #F0F0F0;
+            --text-muted: #B0B0B0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--deep-space) 0%, var(--midnight-blue) 40%, var(--cosmic-purple) 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Звездное небо */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite alternate;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+        
+        /* Основная структура */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Шапка - только для логотипа */
+        .header {
+            width: 100%;
+            background: transparent;
+            padding: 20px 0;
+            position: relative;
+        }
+        
+        .logo-container {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+        
+        .logo-link {
+            display: inline-block;
+            width: 120px;
+            height: 120px;
+            position: relative;
+        }
+        
+        .logo-placeholder {
+            width: 100%;
+            height: 100%;
+            background: var(--starlight);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 40px var(--starlight-glow),
+                        0 0 80px rgba(255, 224, 102, 0.3);
+            border: 2px solid var(--starlight-glow);
+        }
+        
+        /* Луна под логотипом */
+        .moon-container {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .moon-icon {
+            font-size: 3rem;
+            color: var(--starlight);
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Навигация */
+        .nav-container {
+            width: 100%;
+            background: rgba(10, 14, 23, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 224, 102, 0.1);
+            border-bottom: 1px solid rgba(255, 224, 102, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            margin-bottom: 30px;
+        }
+        
+        .nav-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .nav {
+            display: flex;
+            overflow-x: auto;
+            gap: 8px;
+            padding: 12px 0;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .nav::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .nav-btn {
+            background: rgba(42, 27, 61, 0.4);
+            border: 1px solid rgba(255, 224, 102, 0.2);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            flex-shrink: 0;
+        }
+        
+        .nav-btn:hover {
+            border-color: var(--starlight);
+            color: var(--starlight);
+        }
+        
+        .nav-btn.active {
+            background: rgba(255, 224, 102, 0.15);
+            border-color: var(--starlight);
+            color: var(--starlight);
+            box-shadow: 0 0 12px rgba(255, 224, 102, 0.2);
+        }
+        
+        /* Разделы меню */
+        .section {
+            margin-bottom: 50px;
+            scroll-margin-top: 150px; /* Отступ для навигации при скролле по якорям */
+        }
+        
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .section-title::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 25px;
+            background: linear-gradient(to bottom, var(--starlight), var(--nebula));
+            border-radius: 2px;
+        }
+        
+        /* Позиции меню */
+        .menu-item {
+            background: rgba(19, 27, 46, 0.6);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255, 224, 102, 0.1);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        .menu-item:nth-child(n) {
+            animation-delay: calc(0.1s * var(--i, 1));
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .menu-item:hover {
+            transform: translateX(5px);
+            border-color: rgba(255, 224, 102, 0.3);
+            background: rgba(42, 27, 61, 0.4);
+        }
+        
+        .item-name {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .item-price {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--starlight);
+        }
+        
+        /* Подвал */
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 224, 102, 0.1);
+            margin-top: 40px;
+        }
+        
+        /* Эффекты */
+        .glow {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.1) 0%, transparent 70%);
+            z-index: 0;
+        }
+        
+        .glow-1 {
+            top: -250px;
+            right: -250px;
+            background: radial-gradient(circle, rgba(0, 191, 255, 0.08) 0%, transparent 70%);
+        }
+        
+        .glow-2 {
+            bottom: -250px;
+            left: -250px;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .logo-link {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .moon-icon {
+                font-size: 2.5rem;
+            }
+            
+            .nav-wrapper {
+                padding: 0 15px;
+            }
+            
+            .nav {
+                padding: 10px 0;
+            }
+            
+            .nav-btn {
+                padding: 7px 14px;
+                font-size: 0.8rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .menu-item {
+                padding: 15px;
+            }
+            
+            .section {
+                scroll-margin-top: 130px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo-link {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .moon-icon {
+                font-size: 2rem;
+            }
+            
+            .nav-btn {
+                padding: 6px 12px;
+                font-size: 0.75rem;
+            }
+            
+            .item-name {
+                font-size: 1rem;
+            }
+            
+            .item-price {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Звездное небо -->
+    <div class="starfield" id="starfield"></div>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    
+    <div class="container">
+        <!-- Шапка с логотипом -->
+        <header class="header">
+            <a href="#" class="logo-container">
+                <div class="logo-link">
+                    <div class="logo-placeholder">
+                        <!-- SVG логотип будет здесь -->
+                        <img src="logo.svg" alt="Luna Bar Logo" style="width: 60px; height: 60px;">
+                    </div>
+                </div>
+            </a>
+            
+            <div class="moon-container">
+                <div class="moon-icon">🌙</div>
+            </div>
+        </header>
+        
+        <!-- Навигация -->
+        <div class="nav-container">
+            <div class="nav-wrapper">
+                <div class="nav">
+                    <button class="nav-btn active" data-section="piva" onclick="scrollToSection('piva')">PIVA</button>
+                    <button class="nav-btn" data-section="topli" onclick="scrollToSection('topli')">TOPLI NAPITKI</button>
+                    <button class="nav-btn" data-section="vina" onclick="scrollToSection('vina')">VINA</button>
+                    <button class="nav-btn" data-section="brezalkoholne" onclick="scrollToSection('brezalkoholne')">BREZALKOHOLNE</button>
+                    <button class="nav-btn" data-section="zgane" onclick="scrollToSection('zgane')">ŽGANE PIJAČE</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Основной контент -->
+        <main>
+            <!-- Пиво -->
+            <section class="section" id="piva">
+                <h2 class="section-title">PIVA</h2>
+                <div class="menu-item">
+                    <span class="item-name">Ožujsko (0,5L)</span>
+                    <span class="item-price">2,80 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Ožujsko radler (0,5L)</span>
+                    <span class="item-price">2,30 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Staropramen (0,5L)</span>
+                    <span class="item-price">2,80 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Staropramen temno (0,33L)</span>
+                    <span class="item-price">2,70 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Staropramen 0,0 (0,33L)</span>
+                    <span class="item-price">2,60 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Radler Objekti temni (0,5L)</span>
+                    <span class="item-price">3,20 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Corona (0,35L)</span>
+                    <span class="item-price">3,80 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Union (0,5L)</span>
+                    <span class="item-price">2,80 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Uni 0,0 (0,5L)</span>
+                    <span class="item-price">2,60 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Laško (0,5L)</span>
+                    <span class="item-price">2,80 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Heineken (0,33L)</span>
+                    <span class="item-price">3,20 €</span>
+                </div>
+            </section>
+            
+            <!-- Горячие напитки -->
+            <section class="section" id="topli">
+                <h2 class="section-title">TOPLI NAPITKI</h2>
+                <div class="menu-item">
+                    <span class="item-name">Kava espresso</span>
+                    <span class="item-price">1,60 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Kava espresso macchiato</span>
+                    <span class="item-price">1,70 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Bela kava</span>
+                    <span class="item-price">2,20 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Kava z mlekom</span>
+                    <span class="item-price">1,80 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Kava s smetano</span>
+                    <span class="item-price">1,80 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Cappuccino</span>
+                    <span class="item-price">1,80 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Babychino</span>
+                    <span class="item-price">1,00 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Brezkofeinska kava</span>
+                    <span class="item-price">2,10 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Brezkofeinska kava z mlekom, cappuccino</span>
+                    <span class="item-price">2,40 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Brezkofeinska kava s smetano</span>
+                    <span class="item-price">2,40 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Brezkofeinska bela kava</span>
+                    <span class="item-price">2,80 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Kakav</span>
+                    <span class="item-price">2,20 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Čaj</span>
+                    <span class="item-price">1,80 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Čaj z limono</span>
+                    <span class="item-price">2,30 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Čaj z medom</span>
+                    <span class="item-price">2,30 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Čaj z limono in medom</span>
+                    <span class="item-price">2,80 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Kuhano vino (v sezoni)</span>
+                    <span class="item-price">2,80 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Dodatki (mleko, smetana, med, limona)</span>
+                    <span class="item-price">0,50 €</span>
+                </div>
+            </section>
+            
+            <!-- Вина -->
+            <section class="section" id="vina">
+                <h2 class="section-title">VINA</h2>
+                <div class="menu-item">
+                    <span class="item-name">Cviček (1dL)</span>
+                    <span class="item-price">0,10 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Refošk (1dL)</span>
+                    <span class="item-price">0,10 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Merlot (1dL)</span>
+                    <span class="item-price">0,10 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Haložan (1dL)</span>
+                    <span class="item-price">0,10 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Janeževce (1dL)</span>
+                    <span class="item-price">0,10 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Matvazija (1dL)</span>
+                    <span class="item-price">0,10 €</span>
+                </div>
+            </section>
+            
+            <!-- Безалкогольные -->
+            <section class="section" id="brezalkoholne">
+                <h2 class="section-title">BREZALKOHOLNE PIJAČE</h2>
+                <div class="menu-item">
+                    <span class="item-name">Cockta</span>
+                    <span class="item-price">0,275 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">CocaCola</span>
+                    <span class="item-price">0,25 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Fanta</span>
+                    <span class="item-price">0,25 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Radenska</span>
+                    <span class="item-price">0,25 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Vodka z okusom/brez okusa</span>
+                    <span class="item-price">0,50 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Cedevita</span>
+                    <span class="item-price">0,25 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Schweppes tonic/bitter lemon</span>
+                    <span class="item-price">0,10 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Jabolčni/pomarančni sok</span>
+                    <span class="item-price">0,10 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Breskov/jagodni sok</span>
+                    <span class="item-price">0,10 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Naravna limonada</span>
+                    <span class="item-price">0,30 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Red Bull</span>
+                    <span class="item-price">0,25 €</span>
+                </div>
+            </section>
+            
+            <!-- Крепкие напитки -->
+            <section class="section" id="zgane">
+                <h2 class="section-title">ŽGANE PIJAČE</h2>
+                <div class="menu-item">
+                    <span class="item-name">Pelinkovec</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Pelinkovec Antique</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Borovničevec</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Medeni liker</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Travarica (dalmacijavino)</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Sadjevec</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Viljamovka</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Slivovo žganje, žuta osa</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Žganje Šamar</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Vodka</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Stock 84</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Gin</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Jagermeister</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Underberg</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Cynar</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Rum</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Brandy Vecchia</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Chivas Regal</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Jack Daniels</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Jameson</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Canadian Club</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Ballantines</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Four Roses</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Liker Baileys</span>
+                    <span class="item-price">0,03 €</span>
+                </div>
+            </section>
+            
+            <div class="footer">
+                LUNA BAR &copy; 2024 • Nočno nebo, vaše pijače
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Создание звезд
+        function createStars() {
+            const starfield = document.getElementById('starfield');
+            const starCount = 150;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                const size = Math.random() * 2 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                
+                const delay = Math.random() * 3;
+                star.style.animationDelay = `${delay}s`;
+                
+                starfield.appendChild(star);
+            }
+        }
+        
+        // Анимация элементов меню
+        function animateMenuItems() {
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach((item, index) => {
+                item.style.setProperty('--i', index + 1);
+            });
+        }
+        
+        // Функция для скролла к секции
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                // Обновляем активную кнопку
+                const navButtons = document.querySelectorAll('.nav-btn');
+                navButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.getAttribute('data-section') === sectionId) {
+                        btn.classList.add('active');
+                    }
+                });
+                
+                // Прокручиваем к секции
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        // Определяем активную секцию при скролле
+        function updateActiveSection() {
+            const sections = document.querySelectorAll('.section');
+            const navButtons = document.querySelectorAll('.nav-btn');
+            
+            let currentSection = '';
+            const scrollPosition = window.scrollY + 100; // Добавляем отступ
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    currentSection = section.id;
+                }
+            });
+            
+            navButtons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-section') === currentSection) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+        
+        // Инициализация
+        window.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            animateMenuItems();
+            
+            // Обновляем активную секцию при скролле
+            window.addEventListener('scroll', updateActiveSection);
+            updateActiveSection(); // Инициализируем при загрузке
+        });
+    </script>
+</body>
+</html>
