@@ -67,59 +67,35 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 20px;
             position: relative;
             z-index: 1;
         }
         
-        /* Шапка - только для логотипа */
+        /* Шапка с логотипом */
         .header {
             width: 100%;
             background: transparent;
-            padding: 20px 0;
+            padding: 40px 0 20px 0;
             position: relative;
-        }
-        
-        .logo-container {
-            display: block;
             text-align: center;
-            text-decoration: none;
-            margin-bottom: 10px;
         }
         
-        .logo-link {
+        .logo-wrapper {
             display: inline-block;
-            width: 120px;
-            height: 120px;
-            position: relative;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 15px rgba(255, 224, 102, 0.3));
+            transition: filter 0.3s ease;
         }
         
-        .logo-placeholder {
-            width: 100%;
-            height: 100%;
-            background: var(--starlight);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-                  }
-        
-        /* Луна под логотипом */
-        .moon-container {
-            text-align: center;
-            margin-top: 20px;
-            margin-bottom: 20px;
+        .logo-wrapper:hover {
+            filter: drop-shadow(0 0 25px rgba(255, 224, 102, 0.5));
         }
         
-        .moon-icon {
-            font-size: 3rem;
-            color: var(--starlight);
-            animation: float 4s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        .logo {
+            width: 200px;
+            height: 60px;
+            object-fit: contain;
         }
         
         /* Навигация */
@@ -132,7 +108,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
         
         .nav-wrapper {
@@ -145,7 +121,7 @@
             display: flex;
             overflow-x: auto;
             gap: 8px;
-            padding: 12px 0;
+            padding: 15px 0;
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
         }
@@ -158,9 +134,9 @@
             background: rgba(42, 27, 61, 0.4);
             border: 1px solid rgba(255, 224, 102, 0.2);
             color: var(--text-muted);
-            padding: 8px 16px;
+            padding: 10px 18px;
             border-radius: 20px;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 500;
             white-space: nowrap;
             cursor: pointer;
@@ -178,13 +154,13 @@
             background: rgba(255, 224, 102, 0.15);
             border-color: var(--starlight);
             color: var(--starlight);
-            box-shadow: 0 0 12px rgba(255, 224, 102, 0.2);
+            box-shadow: 0 0 15px rgba(255, 224, 102, 0.2);
         }
         
         /* Разделы меню */
         .section {
-            margin-bottom: 50px;
-            scroll-margin-top: 150px; /* Отступ для навигации при скролле по якорям */
+            margin-bottom: 60px;
+            scroll-margin-top: 120px;
         }
         
         .section-title {
@@ -212,8 +188,8 @@
         .menu-item {
             background: rgba(19, 27, 46, 0.6);
             border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -222,18 +198,11 @@
             backdrop-filter: blur(5px);
             opacity: 0;
             transform: translateY(20px);
-            animation: fadeInUp 0.6s ease forwards;
         }
         
-        .menu-item:nth-child(n) {
-            animation-delay: calc(0.1s * var(--i, 1));
-        }
-        
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .menu-item.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .menu-item:hover {
@@ -257,7 +226,7 @@
         /* Подвал */
         .footer {
             text-align: center;
-            padding: 30px 0;
+            padding: 40px 0;
             color: var(--text-muted);
             font-size: 0.9rem;
             border-top: 1px solid rgba(255, 224, 102, 0.1);
@@ -285,19 +254,31 @@
             left: -250px;
         }
         
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         /* Адаптивность */
         @media (max-width: 768px) {
             .container {
-                padding: 15px;
+                padding: 0 15px;
             }
             
-            .logo-link {
-                width: 100px;
-                height: 100px;
+            .header {
+                padding: 30px 0 15px 0;
             }
             
-            .moon-icon {
-                font-size: 2.5rem;
+            .logo {
+                width: 180px;
+                height: 54px;
             }
             
             .nav-wrapper {
@@ -305,7 +286,36 @@
             }
             
             .nav {
-                padding: 10px 0;
+                padding: 12px 0;
+            }
+            
+            .nav-btn {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+            }
+            
+            .menu-item {
+                padding: 16px;
+            }
+            
+            .section {
+                scroll-margin-top: 110px;
+                margin-bottom: 50px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                padding: 20px 0 10px 0;
+            }
+            
+            .logo {
+                width: 160px;
+                height: 48px;
             }
             
             .nav-btn {
@@ -314,31 +324,7 @@
             }
             
             .section-title {
-                font-size: 1.5rem;
-            }
-            
-            .menu-item {
-                padding: 15px;
-            }
-            
-            .section {
-                scroll-margin-top: 130px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .logo-link {
-                width: 80px;
-                height: 80px;
-            }
-            
-            .moon-icon {
-                font-size: 2rem;
-            }
-            
-            .nav-btn {
-                padding: 6px 12px;
-                font-size: 0.75rem;
+                font-size: 1.4rem;
             }
             
             .item-name {
@@ -347,6 +333,15 @@
             
             .item-price {
                 font-size: 1.1rem;
+            }
+            
+            .menu-item {
+                padding: 14px;
+            }
+            
+            .section {
+                scroll-margin-top: 100px;
+                margin-bottom: 40px;
             }
         }
     </style>
@@ -360,17 +355,12 @@
     <div class="container">
         <!-- Шапка с логотипом -->
         <header class="header">
-            <a href="#" class="logo-container">
-                <div class="logo-link">
-                    <div class="logo-placeholder">
-                        <!-- SVG логотип будет здесь -->
-                        <img src="Luna logo.svg" alt="Luna Bar Logo" style="width: 200px; height: 60px;">
-                    </div>
-                </div>
-            </a>
-            
-            <div class="moon-container">
-                <div class="moon-icon">🌙</div>
+            <div class="logo-wrapper">
+                <img
+                    src="Luna logo.svg"
+                    alt="Luna Bar Logo"
+                    class="logo"
+                />
             </div>
         </header>
         
@@ -724,14 +714,6 @@
             }
         }
         
-        // Анимация элементов меню
-        function animateMenuItems() {
-            const menuItems = document.querySelectorAll('.menu-item');
-            menuItems.forEach((item, index) => {
-                item.style.setProperty('--i', index + 1);
-            });
-        }
-        
         // Функция для скролла к секции
         function scrollToSection(sectionId) {
             const section = document.getElementById(sectionId);
@@ -756,7 +738,7 @@
             const navButtons = document.querySelectorAll('.nav-btn');
             
             let currentSection = '';
-            const scrollPosition = window.scrollY + 100; // Добавляем отступ
+            const scrollPosition = window.scrollY + 120; // Отступ для навигации
             
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
@@ -775,14 +757,32 @@
             });
         }
         
+        // Анимация появления элементов при скролле
+        function animateOnScroll() {
+            const menuItems = document.querySelectorAll('.menu-item');
+            
+            menuItems.forEach(item => {
+                const itemPosition = item.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.2;
+                
+                if (itemPosition < screenPosition) {
+                    item.classList.add('visible');
+                }
+            });
+        }
+        
         // Инициализация
         window.addEventListener('DOMContentLoaded', function() {
             createStars();
-            animateMenuItems();
             
-            // Обновляем активную секцию при скролле
-            window.addEventListener('scroll', updateActiveSection);
-            updateActiveSection(); // Инициализируем при загрузке
+            // Показываем элементы при загрузке
+            animateOnScroll();
+            
+            // Анимируем элементы при скролле
+            window.addEventListener('scroll', function() {
+                updateActiveSection();
+                animateOnScroll();
+            });
         });
     </script>
 </body>
