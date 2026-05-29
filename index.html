@@ -2,7 +2,7 @@
 <html lang="sl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>LUNA BAR</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,19 +27,68 @@
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
         }
-        
-        html {
-            scroll-behavior: smooth;
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
         }
-        
-        body {
+
+        /* ===== УЛЬТРА-ТОНКИЙ СКРОЛЛБАР В КОСМИЧЕСКОМ СТИЛЕ ===== */
+        ::-webkit-scrollbar {
+            width: 3px;
+            height: 3px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(
+                to bottom,
+                rgba(138, 43, 226, 0.4),
+                rgba(255, 224, 102, 0.5),
+                rgba(0, 191, 255, 0.4)
+            );
+            border-radius: 1.5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(
+                to bottom,
+                rgba(138, 43, 226, 0.6),
+                rgba(255, 224, 102, 0.7),
+                rgba(0, 191, 255, 0.6)
+            );
+        }
+
+        ::-webkit-scrollbar-button {
+            display: none;
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: transparent;
+        }
+
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 224, 102, 0.4) transparent;
+        }
+
+        /* ===== ГЛАВНЫЙ ИЗОЛИРОВАННЫЙ КОНТЕЙНЕР ===== */
+        .menu-portfolio-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
             background: linear-gradient(135deg, var(--deep-space) 0%, var(--midnight-blue) 40%, var(--cosmic-purple) 100%);
             color: var(--text-light);
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
         }
-        
+
         /* Звездное небо */
         .starfield {
             position: fixed;
@@ -47,7 +96,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-index: 0;
             pointer-events: none;
         }
         
@@ -61,6 +110,27 @@
         @keyframes twinkle {
             0% { opacity: 0.3; }
             100% { opacity: 1; }
+        }
+        
+        .glow {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .glow-1 {
+            top: -250px;
+            right: -250px;
+            background: radial-gradient(circle, rgba(0, 191, 255, 0.08) 0%, transparent 70%);
+        }
+        
+        .glow-2 {
+            bottom: -250px;
+            left: -250px;
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.1) 0%, transparent 70%);
         }
         
         /* Основная структура */
@@ -233,27 +303,6 @@
             margin-top: 40px;
         }
         
-        /* Эффекты */
-        .glow {
-            position: fixed;
-            width: 500px;
-            height: 500px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(138, 43, 226, 0.1) 0%, transparent 70%);
-            z-index: 0;
-        }
-        
-        .glow-1 {
-            top: -250px;
-            right: -250px;
-            background: radial-gradient(circle, rgba(0, 191, 255, 0.08) 0%, transparent 70%);
-        }
-        
-        .glow-2 {
-            bottom: -250px;
-            left: -250px;
-        }
-        
         /* Анимации */
         @keyframes fadeInUp {
             from {
@@ -347,443 +396,466 @@
     </style>
 </head>
 <body>
-    <!-- Звездное небо -->
-    <div class="starfield" id="starfield"></div>
-    <div class="glow glow-1"></div>
-    <div class="glow glow-2"></div>
-    
-    <div class="container">
-        <!-- Шапка с логотипом -->
-        <header class="header">
-            <div class="logo-wrapper">
-                <img
-                    src="Luna logo.svg"
-                    alt="Luna Bar Logo"
-                    class="logo"
-                />
-            </div>
-        </header>
+    <div class="menu-portfolio-wrapper" id="menuPortfolio">
+        <!-- Звездное небо -->
+        <div class="starfield" id="starfield"></div>
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
         
-        <!-- Навигация -->
-        <div class="nav-container">
-            <div class="nav-wrapper">
-                <div class="nav">
-                    <button class="nav-btn active" data-section="piva" onclick="scrollToSection('piva')">PIVA</button>
-                    <button class="nav-btn" data-section="topli" onclick="scrollToSection('topli')">TOPLI NAPITKI</button>
-                    <button class="nav-btn" data-section="vina" onclick="scrollToSection('vina')">VINA</button>
-                    <button class="nav-btn" data-section="brezalkoholne" onclick="scrollToSection('brezalkoholne')">BREZALKOHOLNE</button>
-                    <button class="nav-btn" data-section="zgane" onclick="scrollToSection('zgane')">ŽGANE PIJAČE</button>
+        <div class="container">
+            <!-- Шапка с логотипом -->
+            <header class="header">
+                <div class="logo-wrapper">
+                    <img
+                        src="Luna logo.svg"
+                        alt="Luna Bar Logo"
+                        class="logo"
+                    />
+                </div>
+            </header>
+            
+            <!-- Навигация -->
+            <div class="nav-container" id="navContainer">
+                <div class="nav-wrapper">
+                    <div class="nav">
+                        <button class="nav-btn active" data-section="piva">PIVA</button>
+                        <button class="nav-btn" data-section="topli">TOPLI NAPITKI</button>
+                        <button class="nav-btn" data-section="vina">VINA</button>
+                        <button class="nav-btn" data-section="brezalkoholne">BREZALKOHOLNE</button>
+                        <button class="nav-btn" data-section="zgane">ŽGANE PIJAČE</button>
+                    </div>
                 </div>
             </div>
+            
+            <!-- Основной контент -->
+            <main>
+                <!-- Пиво -->
+                <section class="section" id="piva">
+                    <h2 class="section-title">PIVA</h2>
+                    <div class="menu-item">
+                        <span class="item-name">Ožujsko (0,5L)</span>
+                        <span class="item-price">2,80 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Ožujsko radler (0,5L)</span>
+                        <span class="item-price">2,30 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Staropramen (0,5L)</span>
+                        <span class="item-price">2,80 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Staropramen temno (0,33L)</span>
+                        <span class="item-price">2,70 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Staropramen 0,0 (0,33L)</span>
+                        <span class="item-price">2,60 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Radler Objekti temni (0,5L)</span>
+                        <span class="item-price">3,20 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Corona (0,35L)</span>
+                        <span class="item-price">3,80 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Union (0,5L)</span>
+                        <span class="item-price">2,80 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Uni 0,0 (0,5L)</span>
+                        <span class="item-price">2,60 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Laško (0,5L)</span>
+                        <span class="item-price">2,80 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Heineken (0,33L)</span>
+                        <span class="item-price">3,20 €</span>
+                    </div>
+                </section>
+                
+                <!-- Горячие напитки -->
+                <section class="section" id="topli">
+                    <h2 class="section-title">TOPLI NAPITKI</h2>
+                    <div class="menu-item">
+                        <span class="item-name">Kava espresso</span>
+                        <span class="item-price">1,60 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Kava espresso macchiato</span>
+                        <span class="item-price">1,70 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Bela kava</span>
+                        <span class="item-price">2,20 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Kava z mlekom</span>
+                        <span class="item-price">1,80 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Kava s smetano</span>
+                        <span class="item-price">1,80 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Cappuccino</span>
+                        <span class="item-price">1,80 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Babychino</span>
+                        <span class="item-price">1,00 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Brezkofeinska kava</span>
+                        <span class="item-price">2,10 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Brezkofeinska kava z mlekom, cappuccino</span>
+                        <span class="item-price">2,40 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Brezkofeinska kava s smetano</span>
+                        <span class="item-price">2,40 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Brezkofeinska bela kava</span>
+                        <span class="item-price">2,80 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Kakav</span>
+                        <span class="item-price">2,20 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Čaj</span>
+                        <span class="item-price">1,80 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Čaj z limono</span>
+                        <span class="item-price">2,30 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Čaj z medom</span>
+                        <span class="item-price">2,30 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Čaj z limono in medom</span>
+                        <span class="item-price">2,80 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Kuhano vino (v sezoni)</span>
+                        <span class="item-price">2,80 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Dodatki (mleko, smetana, med, limona)</span>
+                        <span class="item-price">0,50 €</span>
+                    </div>
+                </section>
+                
+                <!-- Вина -->
+                <section class="section" id="vina">
+                    <h2 class="section-title">VINA</h2>
+                    <div class="menu-item">
+                        <span class="item-name">Cviček (1dL)</span>
+                        <span class="item-price">0,10 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Refošk (1dL)</span>
+                        <span class="item-price">0,10 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Merlot (1dL)</span>
+                        <span class="item-price">0,10 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Haložan (1dL)</span>
+                        <span class="item-price">0,10 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Janeževce (1dL)</span>
+                        <span class="item-price">0,10 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Matvazija (1dL)</span>
+                        <span class="item-price">0,10 €</span>
+                    </div>
+                </section>
+                
+                <!-- Безалкогольные -->
+                <section class="section" id="brezalkoholne">
+                    <h2 class="section-title">BREZALKOHOLNE PIJAČE</h2>
+                    <div class="menu-item">
+                        <span class="item-name">Cockta</span>
+                        <span class="item-price">0,275 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">CocaCola</span>
+                        <span class="item-price">0,25 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Fanta</span>
+                        <span class="item-price">0,25 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Radenska</span>
+                        <span class="item-price">0,25 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Vodka z okusom/brez okusa</span>
+                        <span class="item-price">0,50 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Cedevita</span>
+                        <span class="item-price">0,25 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Schweppes tonic/bitter lemon</span>
+                        <span class="item-price">0,10 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Jabolčni/pomarančni sok</span>
+                        <span class="item-price">0,10 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Breskov/jagodni sok</span>
+                        <span class="item-price">0,10 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Naravna limonada</span>
+                        <span class="item-price">0,30 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Red Bull</span>
+                        <span class="item-price">0,25 €</span>
+                    </div>
+                </section>
+                
+                <!-- Крепкие напитки -->
+                <section class="section" id="zgane">
+                    <h2 class="section-title">ŽGANE PIJAČE</h2>
+                    <div class="menu-item">
+                        <span class="item-name">Pelinkovec</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Pelinkovec Antique</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Borovničevec</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Medeni liker</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Travarica (dalmacijavino)</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Sadjevec</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Viljamovka</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Slivovo žganje, žuta osa</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Žganje Šamar</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Vodka</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Stock 84</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Gin</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Jagermeister</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Underberg</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Cynar</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Rum</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Brandy Vecchia</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Chivas Regal</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Jack Daniels</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Jameson</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Canadian Club</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Ballantines</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Four Roses</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="item-name">Liker Baileys</span>
+                        <span class="item-price">0,03 €</span>
+                    </div>
+                </section>
+                
+                <div class="footer">
+                    LUNA BAR &copy; 2026 • Ljubljana, Slovenija
+                </div>
+            </main>
         </div>
-        
-        <!-- Основной контент -->
-        <main>
-            <!-- Пиво -->
-            <section class="section" id="piva">
-                <h2 class="section-title">PIVA</h2>
-                <div class="menu-item">
-                    <span class="item-name">Ožujsko (0,5L)</span>
-                    <span class="item-price">2,80 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Ožujsko radler (0,5L)</span>
-                    <span class="item-price">2,30 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Staropramen (0,5L)</span>
-                    <span class="item-price">2,80 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Staropramen temno (0,33L)</span>
-                    <span class="item-price">2,70 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Staropramen 0,0 (0,33L)</span>
-                    <span class="item-price">2,60 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Radler Objekti temni (0,5L)</span>
-                    <span class="item-price">3,20 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Corona (0,35L)</span>
-                    <span class="item-price">3,80 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Union (0,5L)</span>
-                    <span class="item-price">2,80 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Uni 0,0 (0,5L)</span>
-                    <span class="item-price">2,60 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Laško (0,5L)</span>
-                    <span class="item-price">2,80 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Heineken (0,33L)</span>
-                    <span class="item-price">3,20 €</span>
-                </div>
-            </section>
-            
-            <!-- Горячие напитки -->
-            <section class="section" id="topli">
-                <h2 class="section-title">TOPLI NAPITKI</h2>
-                <div class="menu-item">
-                    <span class="item-name">Kava espresso</span>
-                    <span class="item-price">1,60 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Kava espresso macchiato</span>
-                    <span class="item-price">1,70 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Bela kava</span>
-                    <span class="item-price">2,20 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Kava z mlekom</span>
-                    <span class="item-price">1,80 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Kava s smetano</span>
-                    <span class="item-price">1,80 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Cappuccino</span>
-                    <span class="item-price">1,80 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Babychino</span>
-                    <span class="item-price">1,00 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Brezkofeinska kava</span>
-                    <span class="item-price">2,10 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Brezkofeinska kava z mlekom, cappuccino</span>
-                    <span class="item-price">2,40 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Brezkofeinska kava s smetano</span>
-                    <span class="item-price">2,40 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Brezkofeinska bela kava</span>
-                    <span class="item-price">2,80 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Kakav</span>
-                    <span class="item-price">2,20 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Čaj</span>
-                    <span class="item-price">1,80 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Čaj z limono</span>
-                    <span class="item-price">2,30 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Čaj z medom</span>
-                    <span class="item-price">2,30 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Čaj z limono in medom</span>
-                    <span class="item-price">2,80 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Kuhano vino (v sezoni)</span>
-                    <span class="item-price">2,80 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Dodatki (mleko, smetana, med, limona)</span>
-                    <span class="item-price">0,50 €</span>
-                </div>
-            </section>
-            
-            <!-- Вина -->
-            <section class="section" id="vina">
-                <h2 class="section-title">VINA</h2>
-                <div class="menu-item">
-                    <span class="item-name">Cviček (1dL)</span>
-                    <span class="item-price">0,10 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Refošk (1dL)</span>
-                    <span class="item-price">0,10 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Merlot (1dL)</span>
-                    <span class="item-price">0,10 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Haložan (1dL)</span>
-                    <span class="item-price">0,10 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Janeževce (1dL)</span>
-                    <span class="item-price">0,10 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Matvazija (1dL)</span>
-                    <span class="item-price">0,10 €</span>
-                </div>
-            </section>
-            
-            <!-- Безалкогольные -->
-            <section class="section" id="brezalkoholne">
-                <h2 class="section-title">BREZALKOHOLNE PIJAČE</h2>
-                <div class="menu-item">
-                    <span class="item-name">Cockta</span>
-                    <span class="item-price">0,275 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">CocaCola</span>
-                    <span class="item-price">0,25 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Fanta</span>
-                    <span class="item-price">0,25 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Radenska</span>
-                    <span class="item-price">0,25 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Vodka z okusom/brez okusa</span>
-                    <span class="item-price">0,50 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Cedevita</span>
-                    <span class="item-price">0,25 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Schweppes tonic/bitter lemon</span>
-                    <span class="item-price">0,10 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Jabolčni/pomarančni sok</span>
-                    <span class="item-price">0,10 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Breskov/jagodni sok</span>
-                    <span class="item-price">0,10 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Naravna limonada</span>
-                    <span class="item-price">0,30 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Red Bull</span>
-                    <span class="item-price">0,25 €</span>
-                </div>
-            </section>
-            
-            <!-- Крепкие напитки -->
-            <section class="section" id="zgane">
-                <h2 class="section-title">ŽGANE PIJAČE</h2>
-                <div class="menu-item">
-                    <span class="item-name">Pelinkovec</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Pelinkovec Antique</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Borovničevec</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Medeni liker</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Travarica (dalmacijavino)</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Sadjevec</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Viljamovka</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Slivovo žganje, žuta osa</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Žganje Šamar</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Vodka</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Stock 84</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Gin</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Jagermeister</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Underberg</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Cynar</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Rum</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Brandy Vecchia</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Chivas Regal</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Jack Daniels</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Jameson</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Canadian Club</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Ballantines</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Four Roses</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-                <div class="menu-item">
-                    <span class="item-name">Liker Baileys</span>
-                    <span class="item-price">0,03 €</span>
-                </div>
-            </section>
-            
-            <div class="footer">
-                LUNA BAR &copy; 2026 • Ljubljana, Slovenija
-            </div>
-        </main>
     </div>
     
     <script>
-        // Создание звезд
-        function createStars() {
-            const starfield = document.getElementById('starfield');
-            const starCount = 150;
-            
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
+        (function() {
+            var wrapper = document.getElementById("menuPortfolio");
+            var navButtons = wrapper.querySelectorAll(".nav-btn");
+            var sections = wrapper.querySelectorAll(".section");
+            var navContainer = wrapper.querySelector("#navContainer");
+
+            // Блокировка проброса скролла
+            wrapper.addEventListener("wheel", function(e) {
+                e.stopPropagation();
+            }, { passive: true });
+
+            wrapper.addEventListener("touchmove", function(e) {
+                e.stopPropagation();
+            }, { passive: true });
+
+            // Создание звезд
+            function createStars() {
+                var starfield = wrapper.querySelector("#starfield");
+                var starCount = 150;
                 
-                const size = Math.random() * 2 + 1;
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
-                
-                const delay = Math.random() * 3;
-                star.style.animationDelay = `${delay}s`;
-                
-                starfield.appendChild(star);
+                for (var i = 0; i < starCount; i++) {
+                    var star = document.createElement("div");
+                    star.classList.add("star");
+                    
+                    var size = Math.random() * 2 + 1;
+                    star.style.width = size + "px";
+                    star.style.height = size + "px";
+                    star.style.left = Math.random() * 100 + "%";
+                    star.style.top = Math.random() * 100 + "%";
+                    star.style.animationDelay = Math.random() * 3 + "s";
+                    
+                    starfield.appendChild(star);
+                }
             }
-        }
-        
-        // Функция для скролла к секции
-        function scrollToSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            if (section) {
+
+            // Скролл к секции
+            function scrollToSection(sectionId) {
+                var section = wrapper.querySelector("#" + sectionId);
+                if (!section) return;
+
                 // Обновляем активную кнопку
-                const navButtons = document.querySelectorAll('.nav-btn');
-                navButtons.forEach(btn => {
-                    btn.classList.remove('active');
-                    if (btn.getAttribute('data-section') === sectionId) {
-                        btn.classList.add('active');
+                navButtons.forEach(function(btn) {
+                    btn.classList.remove("active");
+                    if (btn.getAttribute("data-section") === sectionId) {
+                        btn.classList.add("active");
                     }
                 });
-                
-                // Прокручиваем к секции
-                section.scrollIntoView({ behavior: 'smooth' });
+
+                // Ручная прокрутка внутри контейнера
+                var sectionTop = section.getBoundingClientRect().top;
+                var wrapperTop = wrapper.getBoundingClientRect().top;
+                var navHeight = navContainer.offsetHeight;
+                var offset = sectionTop - wrapperTop;
+
+                wrapper.scrollTo({
+                    top: wrapper.scrollTop + offset - navHeight - 10,
+                    behavior: "smooth"
+                });
             }
-        }
-        
-        // Определяем активную секцию при скролле
-        function updateActiveSection() {
-            const sections = document.querySelectorAll('.section');
-            const navButtons = document.querySelectorAll('.nav-btn');
-            
-            let currentSection = '';
-            const scrollPosition = window.scrollY + 120; // Отступ для навигации
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.offsetHeight;
-                
-                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                    currentSection = section.id;
-                }
+
+            // Обработчики кнопок
+            navButtons.forEach(function(btn) {
+                btn.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var sectionId = this.getAttribute("data-section");
+                    scrollToSection(sectionId);
+                });
             });
-            
-            navButtons.forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.getAttribute('data-section') === currentSection) {
-                    btn.classList.add('active');
-                }
-            });
-        }
-        
-        // Анимация появления элементов при скролле
-        function animateOnScroll() {
-            const menuItems = document.querySelectorAll('.menu-item');
-            
-            menuItems.forEach(item => {
-                const itemPosition = item.getBoundingClientRect().top;
-                const screenPosition = window.innerHeight / 1.2;
-                
-                if (itemPosition < screenPosition) {
-                    item.classList.add('visible');
-                }
-            });
-        }
-        
-        // Инициализация
-        window.addEventListener('DOMContentLoaded', function() {
+
+            // Обновление активной секции при скролле
+            function updateActiveSection() {
+                var scrollPosition = wrapper.scrollTop + navContainer.offsetHeight + 20;
+
+                sections.forEach(function(section) {
+                    var sectionTop = section.offsetTop;
+                    var sectionHeight = section.offsetHeight;
+
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        var currentId = section.id;
+                        navButtons.forEach(function(btn) {
+                            btn.classList.remove("active");
+                            if (btn.getAttribute("data-section") === currentId) {
+                                btn.classList.add("active");
+                            }
+                        });
+                    }
+                });
+            }
+
+            // Анимация появления элементов
+            function animateOnScroll() {
+                var menuItems = wrapper.querySelectorAll(".menu-item");
+                var wrapperHeight = wrapper.clientHeight;
+
+                menuItems.forEach(function(item) {
+                    var itemPosition = item.getBoundingClientRect().top;
+                    var screenPosition = wrapperHeight / 1.2;
+
+                    if (itemPosition < screenPosition) {
+                        item.classList.add("visible");
+                    }
+                });
+            }
+
+            // Инициализация
             createStars();
-            
-            // Показываем элементы при загрузке
             animateOnScroll();
-            
-            // Анимируем элементы при скролле
-            window.addEventListener('scroll', function() {
+
+            wrapper.addEventListener("scroll", function() {
                 updateActiveSection();
                 animateOnScroll();
             });
-        });
+        })();
     </script>
 </body>
 </html>
